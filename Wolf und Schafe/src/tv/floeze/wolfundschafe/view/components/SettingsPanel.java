@@ -11,6 +11,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.HashMap;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -42,6 +43,8 @@ public class SettingsPanel extends JPanel {
 	private final HashMap<String, String> contentTexts;
 	private final ActionListener contentListener;
 
+	private final JButton backBtn, nextBtn;
+
 	/**
 	 * Font for buttons
 	 */
@@ -50,6 +53,10 @@ public class SettingsPanel extends JPanel {
 	 * Font for input
 	 */
 	private static final Font inputFont = new Font(Font.DIALOG_INPUT, Font.BOLD, 32);
+	/**
+	 * font for navButtons
+	 */
+	private static final Font navButtonFont = new Font(Font.DIALOG, Font.PLAIN, 64);
 
 	public SettingsPanel() {
 		super();
@@ -95,6 +102,21 @@ public class SettingsPanel extends JPanel {
 			}
 		};
 
+		// back and next button
+		backBtn = new JButton("back");
+		backBtn.setLocation(0, 0);
+		backBtn.setSize(256, 80);
+		backBtn.setFont(navButtonFont);
+		backBtn.setVisible(true);
+		super.add(backBtn);
+
+		nextBtn = new JButton("next");
+		nextBtn.setLocation(getWidth() - 128, getHeight() - 64);
+		nextBtn.setSize(256, 80);
+		nextBtn.setFont(navButtonFont);
+		nextBtn.setVisible(true);
+		super.add(nextBtn);
+
 		super.addComponentListener(new ComponentAdapter() {
 
 			@Override
@@ -107,7 +129,6 @@ public class SettingsPanel extends JPanel {
 				updateComponents();
 			}
 		});
-
 		updateComponents();
 	}
 
@@ -155,8 +176,25 @@ public class SettingsPanel extends JPanel {
 		}
 	}
 
+	public void addBackListener(ActionListener a) {
+		backBtn.addActionListener(a);
+	}
+
+	public void addNextListener(ActionListener a) {
+		nextBtn.addActionListener(a);
+	}
+
+	public void removeBackListener(ActionListener a) {
+		backBtn.removeActionListener(a);
+	}
+
+	public void removeNextListener(ActionListener a) {
+		nextBtn.removeActionListener(a);
+	}
+
 	/**
 	 * Gets the value of a toggle button
+	 * 
 	 * @param key button to get value for
 	 * @return value of button
 	 */
@@ -165,7 +203,8 @@ public class SettingsPanel extends JPanel {
 	}
 
 	/**
-	 * Gets the text value of a 
+	 * Gets the text value of a
+	 * 
 	 * @param key text field to get value for
 	 * @return value of field
 	 */
@@ -177,13 +216,16 @@ public class SettingsPanel extends JPanel {
 	 * updates components (internal online)
 	 */
 	private void updateComponents() {
-		System.out.println("Update " + getWidth() + " " + getHeight());
 		int width = super.getWidth();
 		int height = super.getHeight();
 
 		// contentPane stuff
 		contentPane.setSize(width / 2, 9 * height / 10);
 		contentPane.setLocation(width / 4, height / 20);
+
+		// nav buttons
+		backBtn.setLocation(0, 0);
+		nextBtn.setLocation(getWidth() - nextBtn.getWidth(), getHeight() - nextBtn.getHeight());
 	}
 
 }
