@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.HashMap;
+import java.util.function.Supplier;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -44,6 +45,8 @@ public class SettingsPanel extends JPanel {
 	private final ActionListener contentListener;
 
 	private final JButton backBtn, nextBtn;
+	
+	private Supplier<String> randomNameSupplier;
 
 	/**
 	 * Font for buttons
@@ -173,7 +176,17 @@ public class SettingsPanel extends JPanel {
 			btn.setFont(buttonFont);
 			contentToggles.put(key, false);
 			contentPane.add(btn, contentConstraints);
+		} else if (type.equals(InputType.NICKNAME)) {
+			NicknameField nnf = new NicknameField();
+			nnf.setButtonFont(buttonFont);
+			nnf.setInputFont(inputFont);
+			nnf.setRandomNameSupplier(randomNameSupplier);
+			contentPane.add(nnf, contentConstraints);
 		}
+	}
+	
+	public void setRandomNameSupplier(Supplier<String> supplier) {
+		randomNameSupplier = supplier;
 	}
 
 	public void addBackListener(ActionListener a) {

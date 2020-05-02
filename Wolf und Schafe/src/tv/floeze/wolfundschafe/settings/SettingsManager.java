@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Supplier;
 
 import javax.swing.JLayeredPane;
 
@@ -28,8 +29,10 @@ public class SettingsManager extends JLayeredPane {
 	private final HashMap<Integer, SettingsPanel> panels;
 
 	private int currentPage = 0;
-	
+
 	private Runnable onLastPage;
+
+	private Supplier<String> randomNameSupplier;
 
 	/**
 	 * DON'T FORGET to also set Bounds to parent bounds
@@ -66,12 +69,18 @@ public class SettingsManager extends JLayeredPane {
 					next();
 				}
 			});
+			panels.get(num).setRandomNameSupplier(randomNameSupplier);
 			add(panels.get(num), num);
 			updatePages();
 		}
 		panels.get(num).addSetting(key, type, text);
 	}
-	
+
+	public void setRandomNameSupplier(Supplier<String> supplier) {
+		randomNameSupplier = supplier;
+		panels.forEach((k, v) -> v.setRandomNameSupplier(randomNameSupplier));
+	}
+
 	public void onLastPage(Runnable function) {
 		onLastPage = function;
 	}

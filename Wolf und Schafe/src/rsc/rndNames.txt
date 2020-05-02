@@ -1,0 +1,13 @@
+#prepostfixes
+xX
+-=
+#adjectives
+super
+noob
+foxy
+sheepy
+#names
+Slayer
+Fighter
+Fox
+Sheep
