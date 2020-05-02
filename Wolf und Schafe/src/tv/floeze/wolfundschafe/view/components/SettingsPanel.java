@@ -42,10 +42,11 @@ public class SettingsPanel extends JPanel {
 	private final GridBagConstraints contentConstraints;
 	private final HashMap<String, Boolean> contentToggles;
 	private final HashMap<String, String> contentTexts;
+	private final HashMap<String, Integer> contentIndices;
 	private final ActionListener contentListener;
 
 	private final JButton backBtn, nextBtn;
-	
+
 	private Supplier<String> randomNameSupplier;
 
 	/**
@@ -80,6 +81,7 @@ public class SettingsPanel extends JPanel {
 
 		contentToggles = new HashMap<String, Boolean>();
 		contentTexts = new HashMap<String, String>();
+		contentIndices = new HashMap<String, Integer>();
 
 		// actionlistener for updating values
 		contentListener = new ActionListener() {
@@ -98,10 +100,21 @@ public class SettingsPanel extends JPanel {
 					} else if (c instanceof JTextField) {
 						JTextField j = (JTextField) c;
 						contentTexts.put(e.getActionCommand(), j.getText());
+					} else if (c instanceof NicknameField) {
+						NicknameField j = (NicknameField) c;
+						contentTexts.put(e.getActionCommand(), j.getNickname());
+					} else if (c instanceof ListButton) {
+						ListButton j = (ListButton) c;
+						contentTexts.put(e.getActionCommand(), j.getText());
+						contentIndices.put(e.getActionCommand(), j.getIndex());
 					}
 				}
 				contentToggles.forEach((k, v) -> System.out.println(k + ": " + v));
+				System.out.println();
 				contentTexts.forEach((k, v) -> System.out.println(k + ": " + v));
+				System.out.println();
+				contentIndices.forEach((k, v) -> System.out.println(k + ": " + v));
+				System.out.println();
 			}
 		};
 
@@ -142,7 +155,7 @@ public class SettingsPanel extends JPanel {
 	 * @param type type of input (see {@link InputType})
 	 * @param text text for buttons, ...
 	 */
-	public void addSetting(String key, InputType type, String text) {
+	public void addSetting(String key, InputType type, String... text) {
 		if (type.equals(InputType.TEXT)) {
 			// TODO: add text
 			JTextField field = new JTextField();
@@ -152,24 +165,24 @@ public class SettingsPanel extends JPanel {
 			field.getDocument().addDocumentListener(new DocumentListener() {
 				@Override
 				public void removeUpdate(DocumentEvent e) {
-					contentListener.actionPerformed(new ActionEvent(field, 0, key));
+					contentListener.actionPerformed(new ActionEvent(field, ActionEvent.ACTION_PERFORMED, key));
 				}
 
 				@Override
 				public void insertUpdate(DocumentEvent e) {
-					contentListener.actionPerformed(new ActionEvent(field, 0, key));
+					contentListener.actionPerformed(new ActionEvent(field, ActionEvent.ACTION_PERFORMED, key));
 				}
 
 				@Override
 				public void changedUpdate(DocumentEvent e) {
-					contentListener.actionPerformed(new ActionEvent(field, 0, key));
+					contentListener.actionPerformed(new ActionEvent(field, ActionEvent.ACTION_PERFORMED, key));
 				}
 			});
 			field.setFont(inputFont);
 			contentTexts.put(key, "");
 			contentPane.add(field, contentConstraints);
 		} else if (type.equals(InputType.TOGGLE_BUTTON)) {
-			JToggleButton btn = new JToggleButton(text);
+			JToggleButton btn = new JToggleButton(text[0]);
 			btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			btn.setActionCommand(key);
 			btn.addActionListener(contentListener);
@@ -181,10 +194,20 @@ public class SettingsPanel extends JPanel {
 			nnf.setButtonFont(buttonFont);
 			nnf.setInputFont(inputFont);
 			nnf.setRandomNameSupplier(randomNameSupplier);
+			nnf.setActionCommand(key);
+			nnf.addActionListener(contentListener);
+			contentTexts.put(key, "");
 			contentPane.add(nnf, contentConstraints);
+		} else if (type.equals(InputType.LIST_BUTTON)) {
+			ListButton lb = new ListButton(text);
+			lb.setFont(buttonFont);
+			lb.setActionCommand(key);
+			lb.addActionListener(contentListener);
+			contentTexts.put(key, "");
+			contentPane.add(lb, contentConstraints);
 		}
 	}
-	
+
 	public void setRandomNameSupplier(Supplier<String> supplier) {
 		randomNameSupplier = supplier;
 	}
@@ -216,13 +239,22 @@ public class SettingsPanel extends JPanel {
 	}
 
 	/**
-	 * Gets the text value of a
+	 * Gets the text value of a text
 	 * 
 	 * @param key text field to get value for
 	 * @return value of field
 	 */
 	public String getSettingText(String key) {
 		return contentTexts.getOrDefault(key, "");
+	}
+	
+	/**
+	 * Gets the index of list buttons, ...
+	 * @param key button to get value for
+	 * @return index of button
+	 */
+	public int getSettingIndex(String key) {
+		return contentIndices.getOrDefault(key, -1);
 	}
 
 	/**

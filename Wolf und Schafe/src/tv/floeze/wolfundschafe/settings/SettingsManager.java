@@ -54,7 +54,7 @@ public class SettingsManager extends JLayeredPane {
 		});
 	}
 
-	public void addSetting(int num, String key, InputType type, String text) {
+	public void addSetting(int num, String key, InputType type, String... text) {
 		if (!panels.containsKey(num)) {
 			panels.put(num, new SettingsPanel());
 			panels.get(num).addBackListener(new ActionListener() {
@@ -93,6 +93,33 @@ public class SettingsManager extends JLayeredPane {
 	public void next() {
 		currentPage++;
 		updatePages();
+	}
+
+	/**
+	 * {@link SettingsPanel#getSettingToggle(String)}
+	 */
+	public boolean getSettingToggle(int page, String key) {
+		if(!panels.containsKey(page))
+			return false;
+		return panels.get(page).getSettingToggle(key);
+	}
+
+	/**
+	 * {@link SettingsPanel#getSettingText(String)}
+	 */
+	public String getSettingText(int page, String key) {
+		if(!panels.containsKey(page))
+			return "";
+		return panels.get(page).getSettingText(key);
+	}
+	
+	/**
+	 * {@link SettingsPanel#getSettingIndex(String)}
+	 */
+	public int getSettingIndex(int page, String key) {
+		if(!panels.containsKey(page))
+			return -1;
+		return panels.get(page).getSettingIndex(key);
 	}
 
 	private void updateComponents() {

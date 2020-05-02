@@ -7,11 +7,15 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class NicknameField extends JPanel {
 
@@ -21,6 +25,9 @@ public class NicknameField extends JPanel {
 
 	private final JTextField nameField;
 	private final JButton randomButton;
+
+	private String actionCommand;
+	private final List<ActionListener> actionListeners;
 
 	private Supplier<String> rndNameSupplier;
 
@@ -32,7 +39,31 @@ public class NicknameField extends JPanel {
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.weighty = 1;
 
+		actionListeners = new ArrayList<ActionListener>();
+		
 		nameField = new JTextField();
+		nameField.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				callActionListeners();
+			}
+		});
+		nameField.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				callActionListeners();
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				callActionListeners();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				callActionListeners();
+			}
+		});
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.gridwidth = 3;
@@ -56,6 +87,15 @@ public class NicknameField extends JPanel {
 		super.add(randomButton, gbc);
 	}
 
+	private void callActionListeners() {
+		actionListeners
+				.forEach(l -> l.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, actionCommand)));
+	}
+
+	public String getNickname() {
+		return nameField.getText();
+	}
+
 	public void setRandomNameSupplier(Supplier<String> provider) {
 		rndNameSupplier = provider;
 	}
@@ -66,6 +106,19 @@ public class NicknameField extends JPanel {
 
 	public void setInputFont(Font f) {
 		nameField.setFont(f);
+	}
+
+	public void addActionListener(ActionListener l) {
+		actionListeners.add(l);
+	}
+
+	public void removeActionListener(ActionListener l) {
+		if (actionListeners.contains(l))
+			actionListeners.remove(l);
+	}
+
+	public void setActionCommand(String command) {
+		actionCommand = command;
 	}
 
 	@Override
