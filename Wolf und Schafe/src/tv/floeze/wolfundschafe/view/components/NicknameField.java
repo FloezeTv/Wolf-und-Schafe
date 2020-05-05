@@ -17,6 +17,11 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+/**
+ * A field for entering nicknames with a "Random" Button
+ * @author Floeze
+ *
+ */
 public class NicknameField extends JPanel {
 
 	private static final long serialVersionUID = -7206059276375919836L;
@@ -40,7 +45,7 @@ public class NicknameField extends JPanel {
 		gbc.weighty = 1;
 
 		actionListeners = new ArrayList<ActionListener>();
-		
+
 		nameField = new JTextField();
 		nameField.addActionListener(new ActionListener() {
 			@Override
@@ -92,31 +97,66 @@ public class NicknameField extends JPanel {
 				.forEach(l -> l.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, actionCommand)));
 	}
 
+	/**
+	 * Returns the name
+	 * 
+	 * @return nickname
+	 */
 	public String getNickname() {
 		return nameField.getText();
 	}
 
-	public void setRandomNameSupplier(Supplier<String> provider) {
-		rndNameSupplier = provider;
+	/**
+	 * Sets a supplier for a random name
+	 * 
+	 * @param provider
+	 */
+	public void setRandomNameSupplier(Supplier<String> supplier) {
+		rndNameSupplier = supplier;
 	}
 
+	/**
+	 * Sets the font for the button
+	 * 
+	 * @param f Font
+	 */
 	public void setButtonFont(Font f) {
 		randomButton.setFont(f);
 	}
 
+	/**
+	 * Sets the font of the input
+	 * 
+	 * @param f Font
+	 */
 	public void setInputFont(Font f) {
 		nameField.setFont(f);
 	}
 
+	/**
+	 * Adds an ActionListener for when Value changes
+	 * 
+	 * @param l ActionListener to remove
+	 */
 	public void addActionListener(ActionListener l) {
 		actionListeners.add(l);
 	}
 
+	/**
+	 * Removes an action Listener
+	 * 
+	 * @param l action listener to remove
+	 */
 	public void removeActionListener(ActionListener l) {
 		if (actionListeners.contains(l))
 			actionListeners.remove(l);
 	}
 
+	/**
+	 * Sets the action command
+	 * 
+	 * @param command
+	 */
 	public void setActionCommand(String command) {
 		actionCommand = command;
 	}

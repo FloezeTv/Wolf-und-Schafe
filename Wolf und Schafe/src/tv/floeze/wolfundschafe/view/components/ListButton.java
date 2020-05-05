@@ -8,6 +8,11 @@ import java.util.List;
 
 import javax.swing.JButton;
 
+/**
+ * A Button cycling through a list
+ * @author Floeze
+ *
+ */
 public class ListButton extends JButton {
 
 	private static final long serialVersionUID = -6850372388641631034L;
@@ -46,6 +51,10 @@ public class ListButton extends JButton {
 			actionListeners.remove(l);
 	}
 
+	/**
+	 * Returns the index
+	 * @return index that is currently selected
+	 */
 	public int getIndex() {
 		return index;
 	}

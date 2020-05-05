@@ -208,22 +208,47 @@ public class SettingsPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * Sets the Random name supplier for new Nickname fields
+	 * 
+	 * @param supplier Supplier for random names
+	 */
 	public void setRandomNameSupplier(Supplier<String> supplier) {
 		randomNameSupplier = supplier;
 	}
 
+	/**
+	 * Adds an Action Listener for when the back button is clicked
+	 * 
+	 * @param a Action Listener to add
+	 */
 	public void addBackListener(ActionListener a) {
 		backBtn.addActionListener(a);
 	}
 
+	/**
+	 * Adds an Action Listener for when the next button is clicked
+	 * 
+	 * @param a Action Listener to add
+	 */
 	public void addNextListener(ActionListener a) {
 		nextBtn.addActionListener(a);
 	}
 
+	/**
+	 * Remove an Action Listener for when the back button is clicked
+	 * 
+	 * @param a Action Listener to remove
+	 */
 	public void removeBackListener(ActionListener a) {
 		backBtn.removeActionListener(a);
 	}
 
+	/**
+	 * Remove an Action Listener for when the back next is clicked
+	 * 
+	 * @param a Action Listener to remove
+	 */
 	public void removeNextListener(ActionListener a) {
 		nextBtn.removeActionListener(a);
 	}
@@ -247,9 +272,10 @@ public class SettingsPanel extends JPanel {
 	public String getSettingText(String key) {
 		return contentTexts.getOrDefault(key, "");
 	}
-	
+
 	/**
 	 * Gets the index of list buttons, ...
+	 * 
 	 * @param key button to get value for
 	 * @return index of button
 	 */
