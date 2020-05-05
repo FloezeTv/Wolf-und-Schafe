@@ -12,6 +12,10 @@ public class WolfUndSchafe {
 		// TODO Auto-generated constructor stub
 	}
 
+	/**
+	 * Main method currently only running demo stuff
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		// Debug: demo code
 		JFrame frame = new JFrame("Wolf und Schafe");

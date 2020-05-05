@@ -54,6 +54,10 @@ public class SettingsManager extends JLayeredPane {
 		});
 	}
 
+	/**
+	 * Adds a setting to the manager at the specified page. See {@link SettingsPanel#addSetting(String, InputType, String...)}
+	 * @param num page to add setting to
+	 */
 	public void addSetting(int num, String key, InputType type, String... text) {
 		if (!panels.containsKey(num)) {
 			panels.put(num, new SettingsPanel());
@@ -76,20 +80,34 @@ public class SettingsManager extends JLayeredPane {
 		panels.get(num).addSetting(key, type, text);
 	}
 
+	/**
+	 * Sets the random name supplier for all Panels
+	 * @param supplier Supplier to set
+	 */
 	public void setRandomNameSupplier(Supplier<String> supplier) {
 		randomNameSupplier = supplier;
 		panels.forEach((k, v) -> v.setRandomNameSupplier(randomNameSupplier));
 	}
 
+	/**
+	 * Function to call when last page is reached
+	 * @param function called when last page is reached
+	 */
 	public void onLastPage(Runnable function) {
 		onLastPage = function;
 	}
 
+	/**
+	 * goes to the previous page
+	 */
 	public void back() {
 		currentPage--;
 		updatePages();
 	}
 
+	/**
+	 * goes to the next page
+	 */
 	public void next() {
 		currentPage++;
 		updatePages();
@@ -128,7 +146,7 @@ public class SettingsManager extends JLayeredPane {
 		});
 	}
 
-	public void updatePages() {
+	private void updatePages() {
 		List<Integer> l = new ArrayList<Integer>(panels.keySet());
 		Collections.sort(l);
 		boolean f = false;
